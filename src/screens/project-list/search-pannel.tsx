@@ -1,10 +1,11 @@
 import React from 'react'
 export interface User{
     id: string,
-        name: string,
-        personId: string,
-        organization: string,
-        created: string
+    name: string,
+    personId: string,
+    organization: string,
+    created: string,
+    token:string
 }
 interface SearchPannel{
     users:User[],
