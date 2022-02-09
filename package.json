@@ -10,6 +10,7 @@
     "@types/node": "^16.11.22",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
+    "jira-dev-tool": "^1.7.61",
     "qs": "^6.10.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -22,7 +23,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "json-server": "json-server __json_server_mock__/db.json --watch --port 3001"
+    "json-server": "json-server __json_server_mock__/db.json --watch --port 3001 --middlewares ./__json_server_mock__/minddleware.js",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -43,10 +45,21 @@
     ]
   },
   "devDependencies": {
+    "husky": "^7.0.4",
     "json-server": "^0.17.0",
+    "lint-staged": "^12.3.3",
     "prettier": "2.5.1"
+  },
+  "husky":{
+    "hooks":{
+      "pre-commit":"lint-staged",
+      "commit-msg":"commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "main": "index.js",
   "author": "code hanlr <1685237140@qq.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
+  }
 }
