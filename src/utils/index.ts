@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect,useRef,useState } from "react";
 
 export const isFalsy=(value:unknown)=>value===0?false:!value;
 
@@ -53,15 +53,18 @@ export const useArray=<T>(initialArray:T[])=>{
 
 // 设置文档标题
 export const useDocumnetTitle=(title:string,keepOnUnmount:boolean=true)=>{
-    const oldTitle=document.title;
+    const oldTitle=useRef(document.title).current;
+    // 页面加载时：旧title
+    // 页面加载后:新title
     useEffect(()=>{
         document.title=title;
     },[title])
     useEffect(()=>{
         return ()=>{
             if(!keepOnUnmount){
+
                 document.title=oldTitle;
             }
         }
-    },[])
+    },[keepOnUnmount,oldTitle])
 }
