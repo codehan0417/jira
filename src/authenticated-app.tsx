@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu } from "antd";
-import { useDocumnetTitle } from "utils";
+import { resetRoute, useDocumnetTitle } from "utils";
 
 import { Navigate, Route, Routes } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -24,6 +24,7 @@ export const AuthenticatedApp = () => {
                         <Route path={'/projects'} element={<ProjectListScreen />}></Route>
                         <Route path={'/projects/:projectId/*'} element={<ProjectScreen />}></Route>
                         {/* <Route path={'/'} element={<Navigate to={'/projects'}/>}></Route> */}
+                        <Route index element={<ProjectListScreen/>}></Route>
                     </Routes>
                 </Router>
             </Main>
@@ -35,8 +36,7 @@ const PageHeader = () => {
     const { logout, user } = useAuth();
     return <Header between={true}>
         <HeaderLeft gap={true}>
-            <Button>
-
+            <Button type={'link'} onClick={resetRoute}>
                 <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'} />
             </Button>
             <h3>项目</h3>

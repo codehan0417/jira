@@ -1,28 +1,24 @@
 import React from 'react'
 import { SearchPannel } from "./search-pannel"
 import { List } from "./list"
-import { useState, useEffect } from "react";
-import { cleanObject, useMount, useDebounce } from 'utils';
-import { useHttp } from 'utils/http';
+import { useState } from "react";
+import {  useDebounce } from 'utils';
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
-import { useAsync } from 'utils/use-async';
-import { Project } from 'screens/project-list/list'
 import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/user';
+import { useUrlQueryParam } from 'utils/url';
 
 // const apiUrl = process.env.REACT_APP_API_URL;
 export const ProjectListScreen = () => {
 
-
-    const [param, setParam] = useState({
-        name: "",
-        personId: ''
-    })
+// 基本类型，可以放到依赖中，组件状态可以放到依赖中，非组件状态的对象，绝不可以放到依赖中
 
     // 设置loading error
     // const [isLoading,setIsLoading]=useState(false);
     // const [error,setError]=useState<Error| null>(null)
+
+    const [param,setParam]=useUrlQueryParam(['name','personId'])
 
     const debounce = useDebounce(param, 500);
 
@@ -35,6 +31,8 @@ export const ProjectListScreen = () => {
         <List loading={isLoading} dataSource={list || []} users={users||[]} />
     </Container>
 };
+
+ProjectListScreen.whyDidYouRender=true;
 
 const Container = styled.div`
     padding:2rem;
