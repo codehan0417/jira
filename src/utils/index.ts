@@ -1,13 +1,13 @@
 import { useEffect,useState } from "react";
 
 export const isFalsy=(value:unknown)=>value===0?false:!value;
-export const cleanObject=(obj:Object)=>{
+
+export const isVoid=(value:unknown)=>value===undefined || value===null || value===""
+export const cleanObject=(obj:{[key:string]:unknown})=>{
     const result={...obj};
     Object.keys(result).forEach(key=>{
-        // @ts-ignore
         const value=result[key];
-        if(isFalsy(value)){
-            // @ts-ignore
+        if(isVoid(value)){
             delete result[key];
         }
     })
@@ -18,6 +18,8 @@ export const cleanObject=(obj:Object)=>{
 export const useMount=(callback:()=>void)=>{
     useEffect(()=>{
         callback();
+        // 依赖项里加上callback会造成无线循环，这个和useCallback及useMemo有关
+        
     },[])
 }
 

@@ -1,12 +1,13 @@
 import { useAuth } from "context/auth-context";
-import React, { FormEvent } from "react"
+import React from "react"
 
 import { Form, Input, Button } from 'antd'
 const apiUrl = process.env.REACT_APP_API_URL;
-export const RegisterScreen = () => {
+export const RegisterScreen = ({onError}:{onError:(error:Error)=>void}) => {
     const { register, user } = useAuth()
+    // 提交事件
     const handleSubmit = (values:{username:string,password:string}) => {
-        register(values);
+        register(values).catch(onError);
     }
     return (
         <Form onFinish={handleSubmit}>

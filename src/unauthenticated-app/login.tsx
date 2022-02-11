@@ -1,10 +1,10 @@
 import { useAuth } from "context/auth-context";
 import React, { FormEvent } from "react"
 
-import { Form, Input, Button } from 'antd'
+import { Form, Input } from 'antd'
 import { LongButton } from "unauthenticated-app";
 const apiUrl = process.env.REACT_APP_API_URL;
-export const LoginScreen = () => {
+export const LoginScreen = ({ onError }: { onError: (error: Error) => void }) => {
     // const login = (param:{username:string,password:string})=>{
     //     fetch(`${apiUrl}/login`,{
     //         method:"POST",
@@ -19,8 +19,10 @@ export const LoginScreen = () => {
     //     })
     // }
     const { login, user } = useAuth()
-    const handleSubmit = (values:{username:string,password:string}) => {
-        login(values);
+    const handleSubmit = (values: { username: string, password: string }) => {
+
+        login(values).catch(onError);
+
     }
     return (
         <Form onFinish={handleSubmit}>
@@ -37,8 +39,8 @@ export const LoginScreen = () => {
             <Form.Item name={'password'}
                 rules={[
                     {
-                        required:true,
-                        message:'请输入密码'
+                        required: true,
+                        message: '请输入密码'
                     }
                 ]}
             >
