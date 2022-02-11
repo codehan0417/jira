@@ -14,7 +14,7 @@ export const cleanObject=(obj:{[key:string]:unknown})=>{
     return result;
 }
 
-
+// 封装 componentDidMount
 export const useMount=(callback:()=>void)=>{
     useEffect(()=>{
         callback();
@@ -23,6 +23,7 @@ export const useMount=(callback:()=>void)=>{
     },[])
 }
 
+// 封装节流，避免多次触发
 export const useDebounce=<V>(value:V,delay?:number)=>{
     const [debounceValue,setDebounceValue]=useState(value);
     useEffect(()=>{
@@ -35,20 +36,7 @@ export const useDebounce=<V>(value:V,delay?:number)=>{
     return debounceValue;
 }
 
-export const useArray=<T>(initialArray:T[])=>{
-    const [value,setValue]=useState(initialArray);
-    return {
-        value,
-        setValue,
-        add:(item:T)=>setValue([...value,item]),
-        clear:()=>setValue([]),
-        removeIndex:(index:number)=>{
-            const copy=[...value];
-            copy.splice(index,1);
-            setValue(copy);
-        }
-    }
-}
+
 
 
 // 设置文档标题
@@ -68,3 +56,6 @@ export const useDocumnetTitle=(title:string,keepOnUnmount:boolean=true)=>{
         }
     },[keepOnUnmount,oldTitle])
 }
+
+// 重置路由
+export const resetRoute=()=>window.location.href=window.location.origin

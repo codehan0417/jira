@@ -8,7 +8,7 @@ import { Button, Dropdown, Menu } from "antd";
 import { useDocumnetTitle } from "utils";
 
 import { Navigate, Route, Routes } from 'react-router'
-import {BrowserRouter as Router} from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import { ProjectScreen } from "screens/project";
 
@@ -18,11 +18,12 @@ export const AuthenticatedApp = () => {
         <Container>
             <PageHeader />
             <Main>
-                <ProjectListScreen />
+
                 <Router>
                     <Routes>
                         <Route path={'/projects'} element={<ProjectListScreen />}></Route>
                         <Route path={'/projects/:projectId/*'} element={<ProjectScreen />}></Route>
+                        {/* <Route path={'/'} element={<Navigate to={'/projects'}/>}></Route> */}
                     </Routes>
                 </Router>
             </Main>
@@ -34,7 +35,10 @@ const PageHeader = () => {
     const { logout, user } = useAuth();
     return <Header between={true}>
         <HeaderLeft gap={true}>
-            <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'} />
+            <Button>
+
+                <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'} />
+            </Button>
             <h3>项目</h3>
             <h3>用户</h3>
         </HeaderLeft>
