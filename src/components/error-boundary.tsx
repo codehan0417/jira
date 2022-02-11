@@ -15,7 +15,6 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren<{fall
         const {fallbackRender,children}=this.props;
         if(error){
             return fallbackRender({error});
-
         }
         return children
     }

@@ -9,7 +9,7 @@ function App() {
   const { user } = useAuth();
   return (
     <div className="App">
-      <ErrorBoundary fallbackRender={FullPageErrorFallback}></ErrorBoundary>
+      {/* <ErrorBoundary fallbackRender={FullPageErrorFallback}></ErrorBoundary> */}
       {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
     </div>
   );

@@ -49,3 +49,19 @@ export const useArray=<T>(initialArray:T[])=>{
         }
     }
 }
+
+
+// 设置文档标题
+export const useDocumnetTitle=(title:string,keepOnUnmount:boolean=true)=>{
+    const oldTitle=document.title;
+    useEffect(()=>{
+        document.title=title;
+    },[title])
+    useEffect(()=>{
+        return ()=>{
+            if(!keepOnUnmount){
+                document.title=oldTitle;
+            }
+        }
+    },[])
+}
