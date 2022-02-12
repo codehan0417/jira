@@ -1,8 +1,10 @@
 import React from 'react'
 import { Input, Select, Form } from 'antd'
+import { Project } from './list'
+import { UserSelect } from 'components/use-select'
 
 export interface User {
-    id: string,
+    id: number,
     name: string,
     personId: string,
     organization: string,
@@ -11,10 +13,8 @@ export interface User {
 }
 interface SearchPannel {
     users: User[],
-    param: {
-        name: string,
-        personId: string
-    },
+    param: Partial<Pick<Project, 'name' | 'personId'>>,
+
     setParam: (param: SearchPannel['param']) => void
 }
 export const SearchPannel = ({ users, param, setParam }: SearchPannel) => {
@@ -22,7 +22,7 @@ export const SearchPannel = ({ users, param, setParam }: SearchPannel) => {
 
 
 
-    return <Form style={{marginBottom:'2rem'}} layout={'inline'}>
+    return <Form style={{ marginBottom: '2rem' }} layout={'inline'}>
         <Form.Item>
             <Input placeholder='项目名' type="text" value={param.name} onChange={evt => setParam({
                 ...param,
@@ -31,17 +31,12 @@ export const SearchPannel = ({ users, param, setParam }: SearchPannel) => {
 
         </Form.Item>
         <Form.Item>
-            <Select value={param.personId} onChange={value => setParam({
-                ...param,
-                personId: value
-            })}>
-                <Select.Option value={''}>负责人</Select.Option>
-                {
-                    users.map(user => {
-                        return <Select.Option key={user.id} value={String(user.id)}>{user.name}</Select.Option>
-                    })
-                }
-            </Select>
+            <UserSelect value={param.personId}
+            defaultOptionName={'负责人'}
+                onChange={value => setParam({
+                    ...param,
+                    personId: value
+                })} />
         </Form.Item>
     </Form>
 }

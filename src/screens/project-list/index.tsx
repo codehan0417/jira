@@ -8,6 +8,7 @@ import { Typography } from 'antd';
 import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/user';
 import { useUrlQueryParam } from 'utils/url';
+import { useProjectsSearchParams } from './util';
 
 // const apiUrl = process.env.REACT_APP_API_URL;
 export const ProjectListScreen = () => {
@@ -18,7 +19,7 @@ export const ProjectListScreen = () => {
     // const [isLoading,setIsLoading]=useState(false);
     // const [error,setError]=useState<Error| null>(null)
 
-    const [param,setParam]=useUrlQueryParam(['name','personId'])
+    const [param,setParam]=useProjectsSearchParams();
 
     const debounce = useDebounce(param, 500);
 
