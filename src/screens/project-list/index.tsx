@@ -1,13 +1,11 @@
 import React from 'react'
 import { SearchPannel } from "./search-pannel"
 import { List } from "./list"
-import { useState } from "react";
 import {  useDebounce } from 'utils';
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
 import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/user';
-import { useUrlQueryParam } from 'utils/url';
 import { useProjectsSearchParams } from './util';
 
 // const apiUrl = process.env.REACT_APP_API_URL;

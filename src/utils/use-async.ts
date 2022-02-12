@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import { useMountedRef } from 'utils';
 interface State<D> {
     error: Error | null;
     data: D | null;
@@ -13,13 +14,15 @@ const defaultInitialState: State<null> = {
 const defaultConfig={
     throwError:false
 }
-
+// useState直接传入函数的意义，惰性初始化，所以要用useSatate保存函数，不能直接传入函数
 export const useAsync = <D>(initialState?: State<D>,initialConfig?:typeof defaultConfig)=>{
     const config={...defaultConfig,initialConfig};
     const [state,setState]=useState<State<D>>({
         ...defaultInitialState,
         ...initialState
     })
+
+    const mountedRef=useMountedRef();
     const setData=(data:D)=>setState({
         data,
         stat:'success',
@@ -36,6 +39,7 @@ export const useAsync = <D>(initialState?: State<D>,initialConfig?:typeof defaul
         }
         setState({...state,stat:'loading'})
         return promise.then(data=>{
+            if(mountedRef.current)
             setData(data);
             return data;
         }).catch(error=>{
