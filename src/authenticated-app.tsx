@@ -7,7 +7,7 @@ import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu } from "antd";
 import { resetRoute, useDocumnetTitle } from "utils";
 
-import { Navigate, Route, Routes } from 'react-router'
+import { Route, Routes } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import { ProjectScreen } from "screens/project";
@@ -16,37 +16,49 @@ import { ProjectPopover } from "components/project-popover";
 
 export const AuthenticatedApp = () => {
     useDocumnetTitle('项目列表', false)
-    const [projectModalOpen,setProjecttModalOpen]=useState(false);
+    const [projectModalOpen, setProjecttModalOpen] = useState(false);
     return (
         <Container>
-            <PageHeader setProjecttModalOpen={setProjecttModalOpen} />
+            <PageHeader projectButton={
+                <ButtonNoPadding type="link" onClick={() => setProjecttModalOpen(true)}>创建项目</ButtonNoPadding>
+            } />
             <Main>
                 <Router>
                     <Routes>
-                        <Route path={'/projects'} element={<ProjectListScreen setProjecttModalOpen={setProjecttModalOpen}/>}></Route>
+                        <Route
+                            path={'/projects'}
+                            element={<ProjectListScreen projectButton={
+                                <ButtonNoPadding type="link" onClick={() => setProjecttModalOpen(true)}>创建项目</ButtonNoPadding>
+                            } />}></Route>
                         <Route path={'/projects/:projectId/*'} element={<ProjectScreen />}></Route>
                         {/* <Route path={'/'} element={<Navigate to={'/projects'}/>}></Route> */}
-                        <Route index element={<ProjectListScreen setProjecttModalOpen={setProjecttModalOpen}/>}></Route>
+                        <Route index
+                            element={
+                                <ProjectListScreen projectButton={
+                                    <ButtonNoPadding type="link" onClick={() => setProjecttModalOpen(true)}>创建项目</ButtonNoPadding>
+                                } />}></Route>
                     </Routes>
                 </Router>
             </Main>
-            <ProjectModal projectModalOpen={projectModalOpen} onClose={()=>setProjecttModalOpen(false)}></ProjectModal>
+            <ProjectModal projectModalOpen={projectModalOpen} onClose={() => setProjecttModalOpen(false)}></ProjectModal>
         </Container>
     );
 }
 
-const PageHeader = (props:{setProjecttModalOpen:(isOpen:boolean)=>void}) => {
+const PageHeader = (props: {
+    projectButton: JSX.Element
+}) => {
 
     return <Header between={true}>
         <HeaderLeft gap={true}>
-            <ButtonNoPadding  type={'link'} onClick={resetRoute}>
+            <ButtonNoPadding type={'link'} onClick={resetRoute}>
                 <SoftwareLogo width={'18rem'} height={'2rem'} color={'rgb(38,132,255)'} />
             </ButtonNoPadding>
-            <ProjectPopover setProjecttModalOpen={props.setProjecttModalOpen}/>
+            <ProjectPopover {...props} />
             <span>用户</span>
         </HeaderLeft>
         <HeaderRight>
-        <User/>
+            <User />
         </HeaderRight>
     </Header>
 }
