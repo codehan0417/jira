@@ -17,7 +17,6 @@ export interface Project {
 }
 interface ListProps extends TableProps<Project> {
     users: User[],
-    projectButton:JSX.Element
 }
 export const List = ({ users, ...props }: ListProps) => {
     const {mutate}=useEditProject();
@@ -61,7 +60,7 @@ export const List = ({ users, ...props }: ListProps) => {
             render(value,project){
                 return <Dropdown overlay={<Menu>
                     <Menu.Item key={'edit'}>
-                        {props.projectButton}
+                        
                     </Menu.Item>
                 </Menu>}>
                     <ButtonNoPadding type='link'>...</ButtonNoPadding>

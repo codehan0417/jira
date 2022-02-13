@@ -6,12 +6,11 @@ import styled from '@emotion/styled';
 import { Button, Typography } from 'antd';
 import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/user';
-import { useProjectsSearchParams } from './util';
-import { Row } from 'components/lib';
+import { useProjectModal, useProjectsSearchParams } from './util';
+import { ButtonNoPadding, Row } from 'components/lib';
 
 // const apiUrl = process.env.REACT_APP_API_URL;
-export const ProjectListScreen = (props:
-    { projectButton: JSX.Element }) => {
+export const ProjectListScreen = () => {
 
     // 基本类型，可以放到依赖中，组件状态可以放到依赖中，非组件状态的对象，绝不可以放到依赖中
 
@@ -21,6 +20,7 @@ export const ProjectListScreen = (props:
 
     const [param, setParam] = useProjectsSearchParams();
 
+    const {open} =useProjectModal()
     const debounce = useDebounce(param, 200);
 
     const { isLoading, error, data: list } = useProjects(debounce);
@@ -28,11 +28,11 @@ export const ProjectListScreen = (props:
     return <Container>
         <Row between={true}>
             <h1>项目列表</h1>
-            {props.projectButton}
+            <ButtonNoPadding onClick={open} type={'link'}>创建项目</ButtonNoPadding>
         </Row>
         <SearchPannel users={users || []} param={param} setParam={setParam} />
         {error ? <Typography.Text type={'danger'}>{error.message}</Typography.Text> : null}
-        <List projectButton={props.projectButton} loading={isLoading} dataSource={list || []} users={users || []} />
+        <List  loading={isLoading} dataSource={list || []} users={users || []} />
     </Container>
 };
 

@@ -2,13 +2,12 @@
 import styled from "@emotion/styled";
 import { Typography, List, Popover, Divider, Button } from "antd";
 import React from "react";
+import { useProjectModal } from "screens/project-list/util";
 import { useProjects } from "utils/project";
 import { ButtonNoPadding } from "./lib";
-export const ProjectPopover = (props: {
-    projectButton:JSX.Element
-}) => {
+export const ProjectPopover = () => {
     const { data: projects, isLoading } = useProjects();
-
+    const {open}=useProjectModal();
     const pinnedProjexts = projects?.filter(project => project.pin);
     const content = <ContentContainer>
         <Typography.Text type={'secondary'}>收藏项目</Typography.Text>
@@ -20,7 +19,7 @@ export const ProjectPopover = (props: {
             }
         </List>
         <Divider />
-        {props.projectButton}
+        <ButtonNoPadding onClick={open} type={'link'}>创建项目</ButtonNoPadding>
     </ContentContainer>
 
     return <Popover placement={'bottom'} content={content}>
