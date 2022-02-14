@@ -8,12 +8,12 @@ import { ButtonNoPadding } from "./lib";
 export const ProjectPopover = () => {
     const { data: projects, isLoading } = useProjects();
     const {open}=useProjectModal();
-    const pinnedProjexts = projects?.filter(project => project.pin);
+    const pinnedProjexts = projects?.filter((project: { pin: any; }) => project.pin);
     const content = <ContentContainer>
         <Typography.Text type={'secondary'}>收藏项目</Typography.Text>
         <List>
             {
-                pinnedProjexts?.map(project => <List.Item key={project.id}>
+                pinnedProjexts?.map((project: { id: React.Key | null | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => <List.Item key={project.id}>
                     <List.Item.Meta title={project.name} />
                 </List.Item>)
             }
