@@ -1,10 +1,11 @@
 import React, { ReactNode, useState } from 'react'
 import * as auth from 'auth-provider'
-import { User } from 'screens/project-list/search-pannel';
+import { User } from "types/user";
 import { http } from 'utils/http';
 import { useMount } from 'utils';
 import { useAsync } from 'utils/use-async';
 import { FullPageErrorFallback, FullPageLoading } from 'components/lib';
+import { useQueryClient } from 'react-query';
 
 interface AuthForm {
     username: string,
@@ -31,11 +32,25 @@ AuthContext.displayName = "AuthContext"
 
 export const AuthProvider = ({children}:{children:ReactNode}) => {
     // const [user, setUser] = useState<User | null>(null);
-    const {data:user,error,isLoading,isIdle,isError,run,setData:setUser}=useAsync<User|null>()
+    const {
+        data:user,
+        error,
+        isLoading,
+        isIdle,
+        isError,
+        run,
+        setData:setUser
+    }=useAsync<User|null>();
 
+    const queryClient=useQueryClient();
     const login = (form: AuthForm) => auth.login(form).then(setUser)
     const register = (form: AuthForm) => auth.register(form).then(setUser)
-    const logout = () => auth.logout().then(user => setUser(null))
+    const logout = () => auth.logout().then(user =>{
+
+        setUser(null);
+        // 清除缓存数据
+        queryClient.clear()
+    })
     useMount(()=>{
         // bootstrapUser().then(setUser);
         run(bootstrapUser())

@@ -1,7 +1,8 @@
-import { Project } from "screens/project-list/list";
+
 import { useHttp } from "./http";
 import { QueryKey, useMutation, useQuery } from "react-query";
 import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-option";
+import { Project } from "types/project";
 
 // 获取project列表
 export const useProjects = (param?: Partial<Project>) => {
@@ -46,7 +47,7 @@ export const useDeleteProject = (queryKey:QueryKey) => {
    
 }
 
-// 获取projects的详情
+// 获取project的详情
 export const useProject=(id?:number)=>{
     const client=useHttp();
     return useQuery<Project>(

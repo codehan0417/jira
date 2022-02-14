@@ -1,5 +1,5 @@
 import React from 'react'
-import { User } from './search-pannel'
+import { User } from "../../types/user"
 import { Dropdown, Menu, Modal, Table, TableProps } from 'antd'
 import dayjs from 'dayjs'
 
@@ -8,33 +8,26 @@ import { Pin } from 'components/pin'
 import { useDeleteProject, useEditProject } from 'utils/project'
 import { ButtonNoPadding } from 'components/lib'
 import { useProjectModal, useProjectsQueryKey } from './util'
-export interface Project {
-    id: number;
-    name: string;
-    personId: number;
-    pin: boolean;
-    organization: string;
-    created: number
-}
+import { Project } from 'types/project'
 interface ListProps extends TableProps<Project> {
     users: User[],
 }
 export const List = ({ users, ...props }: ListProps) => {
-    const {mutate}=useEditProject(useProjectsQueryKey());
-    const pinProject=(id:number)=>(pin:boolean)=>mutate({id,pin})
+    const { mutate } = useEditProject(useProjectsQueryKey());
+    const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
 
     return <Table rowKey={'id'} pagination={false} columns={[
         {
-            title:<Pin checked={true} disabled={true} />,
-            render(value,project){
-                return <Pin checked={project.pin} onCheckedChange={pinProject(project.id)}/>
-             }
+            title: <Pin checked={true} disabled={true} />,
+            render(value, project) {
+                return <Pin checked={project.pin} onCheckedChange={pinProject(project.id)} />
+            }
         },
         {
             title: '名称',
             sorter: (a, b) => a.name.localeCompare(b.name),
             render(value, project) {
-                return <Link to={String(project.id)}>{project.name}</Link>
+                return <Link to={String(`projects/${project.id}`)}>{project.name}</Link>
             }
         },
         {
@@ -59,8 +52,8 @@ export const List = ({ users, ...props }: ListProps) => {
 
         },
         {
-            render(value,project){
-                return <More project={project}/>
+            render(value, project) {
+                return <More project={project} />
             }
         }
     ]} {...props} />
@@ -68,26 +61,26 @@ export const List = ({ users, ...props }: ListProps) => {
 
 
 
-const More=({project}:{project:Project})=>{
-    const editProject=(id:number)=>()=>startEdit(id)
-    const {startEdit} = useProjectModal();
-    const {mutate:deleteProject}=useDeleteProject(useProjectsQueryKey())
-    const confirmDeleteProject=(id:number)=>{
-       Modal.confirm({
-          title:'确认删除这个项目吗？',
-          content:'点击确认删除',
-          okText:'确认',
-          onOk(){
-              deleteProject({id})
-          }
-       })
+const More = ({ project }: { project: Project }) => {
+    const editProject = (id: number) => () => startEdit(id)
+    const { startEdit } = useProjectModal();
+    const { mutate: deleteProject } = useDeleteProject(useProjectsQueryKey())
+    const confirmDeleteProject = (id: number) => {
+        Modal.confirm({
+            title: '确认删除这个项目吗？',
+            content: '点击确认删除',
+            okText: '确认',
+            onOk() {
+                deleteProject({ id })
+            }
+        })
     }
 
-    return  <Dropdown overlay={<Menu>
+    return <Dropdown overlay={<Menu>
         <Menu.Item onClick={editProject(project.id)} key={'edit'}>
             编辑
         </Menu.Item>
-        <Menu.Item onClick={()=>confirmDeleteProject(project.id)} key={'delete'}>
+        <Menu.Item onClick={() => confirmDeleteProject(project.id)} key={'delete'}>
             删除
         </Menu.Item>
     </Menu>}>
