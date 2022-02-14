@@ -3,7 +3,7 @@ import { Drawer, Button, Spin, Form, Input } from "antd";
 import { useProjectModal, useProjectsQueryKey } from "./util";
 import { UserSelect } from "components/use-select";
 import { useAddProject, useEditProject } from "utils/project";
-import { useForm } from "antd/es/form/Form";
+
 import { ErrorBox } from "components/lib";
 import styled from "@emotion/styled";
 
@@ -13,7 +13,7 @@ export const ProjectModal = () => {
   const useMutateProject = editingProject ? useEditProject : useAddProject
 
   // 处理表单
-  const [form] = useForm()
+  const [form] = Form.useForm()
   // 等到编辑或创建完成再处理
   const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject(useProjectsQueryKey());
   const onFinish = (values: any) => {
@@ -22,13 +22,15 @@ export const ProjectModal = () => {
       close()
     })
   }
-
+  const closeModal = () => {
+    form.resetFields();
+    close();
+  };
   const title = editingProject ? '编辑项目' : '创建项目'
-
   useEffect(() => {
     form.setFieldsValue(editingProject);
   }, [editingProject, form])
-  return <Drawer forceRender={true} onClose={close} visible={projectModalOpen} width={'100%'}>
+  return <Drawer forceRender={true} onClose={closeModal} visible={projectModalOpen} width={'100%'}>
     <Container>
       {
         isLoading ? <Spin size={'large'} /> : <>

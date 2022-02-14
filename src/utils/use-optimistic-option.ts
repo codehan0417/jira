@@ -10,7 +10,6 @@ export const useConfig=(queryKey:QueryKey,callback:(target:any,old?:any[])=>any[
             // 在缓存中
             queryClient.setQueryData(queryKey,(old?:any[])=>{
                 return callback(target,old);
-                return old?.map(project=>project.id===target.id?{...project,...target}:project)||[]
             })
             return {previousItems}
         },

@@ -3,7 +3,6 @@ import { SearchPannel } from "./search-pannel"
 import { List } from "./list"
 import { useDebounce } from 'utils';
 import styled from '@emotion/styled';
-import { Button, Typography } from 'antd';
 import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/user';
 import { useProjectModal, useProjectsSearchParams } from './util';

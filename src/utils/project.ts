@@ -1,10 +1,6 @@
 import { Project } from "screens/project-list/list";
-import { useAsync } from "./use-async"
-import { useEffect } from "react";
-import { cleanObject } from "utils";
 import { useHttp } from "./http";
-import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
-import { useProjectsSearchParams } from "screens/project-list/util";
+import { QueryKey, useMutation, useQuery } from "react-query";
 import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-option";
 
 // 获取project列表
@@ -14,13 +10,9 @@ export const useProjects = (param?: Partial<Project>) => {
 }
 
 // 编辑项目  收藏
-export const useEditProject = (querykey:QueryKey) => {
+export const useEditProject = (queryKey:QueryKey) => {
     // useMutation
     const client = useHttp();
-    const queryClient=useQueryClient();
-
-    const [searchParams]=useProjectsSearchParams()
-    const queryKey=['projects',searchParams]
     return useMutation((params: Partial<Project>) =>
         client(`projects/${params.id}`, {
             data: params,
@@ -33,7 +25,6 @@ export const useEditProject = (querykey:QueryKey) => {
 // 添加项目 
 export const useAddProject = (queryKey:QueryKey) => {
     const client = useHttp();
-    const queryClient=useQueryClient()
     return useMutation((params: Partial<Project>) =>
         client(`projects`, {
             data: params,
