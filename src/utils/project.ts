@@ -3,7 +3,9 @@ import { useAsync } from "./use-async"
 import { useEffect } from "react";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
+import { useProjectsSearchParams } from "screens/project-list/util";
+import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-option";
 
 // 获取project列表
 export const useProjects = (param?: Partial<Project>) => {
@@ -11,32 +13,44 @@ export const useProjects = (param?: Partial<Project>) => {
     return useQuery(['projects', param], () => client('projects', { data: param }))
 }
 
-// 编辑项目
-export const useEditProject = () => {
+// 编辑项目  收藏
+export const useEditProject = (querykey:QueryKey) => {
     // useMutation
     const client = useHttp();
     const queryClient=useQueryClient();
+
+    const [searchParams]=useProjectsSearchParams()
+    const queryKey=['projects',searchParams]
     return useMutation((params: Partial<Project>) =>
         client(`projects/${params.id}`, {
             data: params,
             method: 'PATCH'
-        }),{
-            onSuccess:()=>queryClient.invalidateQueries('projects')
-        }
+        }),
+        useEditConfig(queryKey)
     )
 
 }
-// 
-export const useAddProject = () => {
+// 添加项目 
+export const useAddProject = (queryKey:QueryKey) => {
     const client = useHttp();
     const queryClient=useQueryClient()
     return useMutation((params: Partial<Project>) =>
         client(`projects`, {
             data: params,
             method: 'POST'
-        }),{
-            onSuccess:()=>queryClient.invalidateQueries('projects')
-        }
+        }),
+        useAddConfig(queryKey)
+    )
+   
+}
+// 删除项目
+export const useDeleteProject = (queryKey:QueryKey) => {
+    const client = useHttp();
+    return useMutation(({id}:{id:number}) =>
+        client(`projects/${id}`, {
+            method: 'DELETE'
+        }),
+        useDeleteConfig(queryKey)
     )
    
 }
