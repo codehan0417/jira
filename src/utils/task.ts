@@ -2,7 +2,7 @@
 import { useHttp } from "./http";
 import { QueryKey, useMutation, useQuery } from "react-query";
 import { Task } from "types/task";
-import { useAddConfig } from "./use-optimistic-option";
+import { useAddConfig, useEditConfig } from "./use-optimistic-option";
 // 获取project列表
 export const useTasks = (param?: Partial<Task>) => {
     const client = useHttp();
@@ -22,4 +22,29 @@ export const useAddTask = (queryKey:QueryKey) => {
         useAddConfig(queryKey)
     )
    
+}
+// 获取task详情
+export const useTask=(id?:number)=>{
+    const client=useHttp();
+    return useQuery<Task>(
+        ['tasks',{id}],
+        ()=>client(`tasks/${id}`),
+        {
+            enabled:!!id
+        }
+    )
+}
+
+// 编辑task事务
+export const useEditTask = (queryKey:QueryKey) => {
+    // useMutation
+    const client = useHttp();
+    return useMutation((params: Partial<Task>) =>
+        client(`tasks/${params.id}`, {
+            data: params,
+            method: 'PATCH'
+        }),
+        useEditConfig(queryKey)
+    )
+
 }
