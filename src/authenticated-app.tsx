@@ -13,6 +13,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { ProjectScreen } from "screens/project";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
+import { UserPopover } from "components/user-popover";
 
 export const AuthenticatedApp = () => {
     useDocumnetTitle('项目列表', false)
@@ -32,7 +33,7 @@ export const AuthenticatedApp = () => {
                                 <ProjectListScreen />}></Route>
                     </Routes>
                 </Main>
-                <ProjectModal ></ProjectModal>
+                <ProjectModal />
             </Router>
         </Container>
     );
@@ -46,7 +47,7 @@ const PageHeader = () => {
                 <SoftwareLogo width={'18rem'} height={'2rem'} color={'rgb(38,132,255)'} />
             </ButtonNoPadding>
             <ProjectPopover />
-            <span>用户</span>
+            <UserPopover />
         </HeaderLeft>
         <HeaderRight>
             <User />
@@ -86,6 +87,7 @@ const Header = styled(Row)`
     z-index:1;
 `
 const Main = styled.main`
+    /* width: 100%; */
     display: flex;
     overflow: hidden;
 `

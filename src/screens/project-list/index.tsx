@@ -39,6 +39,7 @@ ProjectListScreen.whyDidYouRender = true;
 
 const Container = styled.div`
     padding:2rem;
+    width: 100%;
 `
 
 
