@@ -12,6 +12,7 @@ import { Task } from 'types/task';
 import { Mark } from 'components/mark';
 import { useDeleteKanban, useKanbans } from 'utils/kanban';
 import { Row } from 'components/lib';
+import { Drag, Drop, DropChild } from 'components/drag-and-drop';
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
     const { data: taskTypes } = useTaskTypes();
@@ -23,25 +24,41 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
 }
 
 
-export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
+export const KanbanColumn = React.forwardRef<HTMLDivElement, { kanban: Kanban }>(({ kanban, ...props }, ref) => {
     const { data: alltasks } = useTasks(useTaskSearchParams());
     const tasks = alltasks?.filter(task => task.kanbanId === kanban.id)
 
 
 
-    return <Container>
+    return <Container {...props} ref={ref}>
         <Row between={true}>
             <h3>{kanban.name}</h3>
-            <More kanban={kanban}/>
+            <More kanban={kanban} key={kanban.id} />
         </Row>
         <TasksContainer>
-            {
-                tasks?.map(task => <TaskCard key={task.id} task={task} />)
-            }
+            <Drop
+                type={"ROW"}
+                direction={"vertical"}
+                droppableId={String(kanban.id)}
+            >
+                <DropChild style={{ minHeight: "1rem" }}>
+                    {tasks?.map((task, taskIndex) => (
+                        <Drag
+                            key={task.id}
+                            index={taskIndex}
+                            draggableId={"task" + task.id}
+                        >
+                            <div>
+                                <TaskCard key={task.id} task={task} />
+                            </div>
+                        </Drag>
+                    ))}
+                </DropChild>
+            </Drop>
             <CreateTask kanbanId={kanban.id} />
         </TasksContainer>
     </Container>
-}
+})
 
 const TaskCard = ({ task }: { task: Task }) => {
     const { startEdit } = useTasksModal()
@@ -68,7 +85,7 @@ const More = ({ kanban }: { kanban: Kanban }) => {
         })
     }
     const overLay = <Menu>
-        <Menu.Item>
+        <Menu.Item >
             <Button type='link' onClick={startEdit}>删除</Button>
         </Menu.Item>
     </Menu>

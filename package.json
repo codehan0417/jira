@@ -21,6 +21,7 @@
     "jira-dev-tool": "^1.6.59",
     "qs": "^6.10.3",
     "react": "^17.0.2",
+    "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
     "react-query": "^3.34.14",
     "react-router": "6",
@@ -54,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.2",
     "husky": "^7.0.4",
     "json-server": "^0.17.0",
     "lint-staged": "^12.3.3",
@@ -75,12 +77,11 @@
     [
       "@babel/preset-react",
       {
-        "pragma": "dom", 
-        "pragmaFrag": "DomFrag", 
-        "throwIfNamespace": false, 
-        "runtime": "classic" 
+        "pragma": "dom",
+        "pragmaFrag": "DomFrag",
+        "throwIfNamespace": false,
+        "runtime": "classic"
       }
     ]
   ]
-  
 }
